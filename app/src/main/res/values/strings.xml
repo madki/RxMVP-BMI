@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RxMVP-BMI</string>
+    <string name="height_in_cms">Height in cms</string>
+    <string name="weight_in_kgs">Weight in kgs</string>
+    <string name="bmi_string">BMI: %s</string>
+    <string name="initial_message">Please enter your height and weight</string>
+</resources>
