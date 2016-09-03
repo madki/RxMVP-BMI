@@ -7,6 +7,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.subjects.PublishSubject;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,5 +32,10 @@ public class MainPresenterTests {
     mockWeight$.onNext("16");
 
     verify(view, times(1)).setBMI("BMI: 1.00");
+  }
+
+  @Test
+  public void calculateBMITest_validInputs() throws Exception {
+    assertEquals(Float.valueOf(1.0f), MainPresenter.calculateBMI(400f, 16f));
   }
 }
