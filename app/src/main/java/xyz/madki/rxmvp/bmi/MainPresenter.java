@@ -17,14 +17,14 @@ public final class MainPresenter extends BasePresenter<MainPresenter.IView> {
     Observable<String> height$ = view.height$();
     Observable<String> weight$ = view.weight$();
 
-    Observable<Float> heightFloat$ = height$.map(this::stringToFloat);
-    Observable<Float> weightFloat$ = weight$.map(this::stringToFloat);
+    Observable<Float> heightFloat$ = height$.map(MainPresenter::stringToFloat);
+    Observable<Float> weightFloat$ = weight$.map(MainPresenter::stringToFloat);
 
     Observable<Float> bmiFloat$ = Observable.combineLatest(
-            heightFloat$, weightFloat$, this::calculateBMI
+            heightFloat$, weightFloat$, MainPresenter::calculateBMI
     );
-    Observable<String> bmiString$ = bmiFloat$.map(this::bmiString);
-    Observable<String> message$ = bmiFloat$.map(this::getMessageFromBMI);
+    Observable<String> bmiString$ = bmiFloat$.map(MainPresenter::bmiString);
+    Observable<String> message$ = bmiFloat$.map(MainPresenter::getMessageFromBMI);
     addViewSubscriptions(
             bmiString$.subscribe(view::setBMI),
             message$.subscribe(view::setMessage)
@@ -32,24 +32,24 @@ public final class MainPresenter extends BasePresenter<MainPresenter.IView> {
   }
 
   @NonNull
-  private String bmiString(@Nullable Float bmi) {
+  static String bmiString(@Nullable Float bmi) {
     return bmi == null ? "BMI: ??" :
             String.format(Locale.getDefault(), "BMI: %.2f", bmi);
   }
 
-  private boolean isDataValid(Float height, Float weight) {
+  static boolean isDataValid(Float height, Float weight) {
     return !(height == null || weight == null || height == 0.0f);
   }
 
   @Nullable
-  private Float calculateBMI(Float height, Float weight) {
+  static Float calculateBMI(Float height, Float weight) {
     if (!isDataValid(height, weight)) return null;
 
     return weight * 10000 / (height * height);
   }
 
   @Nullable
-  private Float stringToFloat(String s) {
+  static Float stringToFloat(String s) {
     if (s == null || s.isEmpty()) return null;
 
     try {
@@ -59,7 +59,7 @@ public final class MainPresenter extends BasePresenter<MainPresenter.IView> {
     }
   }
 
-  private String getMessageFromBMI(Float bmi) {
+  static String getMessageFromBMI(Float bmi) {
     if (bmi == null) {
       return "Please enter your height and weight";
     }
